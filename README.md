@@ -34,8 +34,7 @@ A React-based frontend application for managing a virtual pet adoption center. T
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd pet-adoption-frontend
+git clone https://github.com/razorisuru/Virtual-Pet-Adoption-Center-Frontend
 ```
 
 2. Install dependencies:
@@ -98,10 +97,6 @@ pet-adoption-frontend/
 └── README.md
 ```
 
-## Screenshots
-
-[Add your screenshots here once the application is running]
-
 ## Future Improvements
 
 - Add user authentication
@@ -110,7 +105,3 @@ pet-adoption-frontend/
 - Add search functionality
 - Implement pet categories and more detailed filtering
 - Add dark mode
-
-## License
-
-[Your License Here]
