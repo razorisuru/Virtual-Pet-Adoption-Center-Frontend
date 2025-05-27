@@ -151,60 +151,91 @@ const HomePage = () => {
     <Layout>
       {/* Success message toast */}
       {actionSuccess.show && (
-        <div className="fixed top-6 right-6 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg z-50 animate-bounce-slow">
-          {actionSuccess.message}
+        <div
+          className="fixed top-6 right-6 bg-green-600 text-white px-6 py-3 rounded-lg shadow-2xl z-50 transition-all duration-500 animate-fade-in"
+          role="status"
+          aria-live="polite"
+        >
+          <span className="flex items-center gap-2">
+            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            {actionSuccess.message}
+          </span>
         </div>
       )}
-      
+
       {/* Filter bar */}
-      <FilterBar 
-        onAddPet={handleAddPet}
-        onFilterChange={setMoodFilter}
-        activeFilter={moodFilter}
-        adoptedFilter={adoptedFilter}
-        onAdoptedFilterChange={setAdoptedFilter}
-      />
-      
+      <div className="mb-8">
+        <FilterBar
+          onAddPet={handleAddPet}
+          onFilterChange={setMoodFilter}
+          activeFilter={moodFilter}
+          adoptedFilter={adoptedFilter}
+          onAdoptedFilterChange={setAdoptedFilter}
+        />
+      </div>
+
       {/* Error message */}
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-          <strong className="font-bold">Error!</strong>
-          <span className="block sm:inline"> {error}</span>
+        <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg mb-8 flex items-center gap-3 shadow">
+          <svg className="w-6 h-6 text-red-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 5.636l-1.414 1.414M6.343 17.657l-1.414-1.414M5.636 5.636l1.414 1.414M17.657 17.657l1.414-1.414M12 8v4m0 4h.01" />
+          </svg>
+          <div>
+            <strong className="font-bold">Error!</strong>
+            <span className="block sm:inline"> {error}</span>
+          </div>
         </div>
       )}
-      
+
+      {/* Loading spinner */}
+      {loading && (
+        <div className="flex justify-center items-center min-h-[200px]">
+          <svg className="animate-spin h-10 w-10 text-blue-500" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+          </svg>
+          <span className="ml-4 text-lg text-blue-700">Loading pets...</span>
+        </div>
+      )}
+
       {/* Pet list */}
-      <PetList 
-        pets={pets}
-        loading={loading}
-        onEdit={handleEditPet}
-        onAdopt={handleAdoptPet}
-        onDelete={handleOpenDeleteConfirmation}
-      />
-      
+      {!loading && (
+        <div className="transition-all duration-300">
+          <PetList
+            pets={pets}
+            loading={loading}
+            onEdit={handleEditPet}
+            onAdopt={handleAdoptPet}
+            onDelete={handleOpenDeleteConfirmation}
+          />
+        </div>
+      )}
+
       {/* Add/Edit Pet Modal */}
-      <PetModal 
+      <PetModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         onSubmit={handleSubmitPet}
         pet={currentPet}
       />
-      
+
       {/* Confirmation Modal for Delete */}
       {confirmationModal.show && (
-        <div className="modal-backdrop">
-          <div className="modal-content max-w-sm">
-            <h3 className="text-xl font-bold mb-4">Confirm Action</h3>
-            <p className="mb-6">{confirmationModal.message}</p>
-            <div className="flex justify-end space-x-2">
-              <button 
-                className="btn btn-secondary"
-                onClick={() => setConfirmationModal({...confirmationModal, show: false})}
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 transition-all">
+          <div className="bg-white rounded-lg shadow-2xl p-8 max-w-sm w-full animate-fade-in">
+            <h3 className="text-2xl font-bold mb-4 text-gray-800">Confirm Action</h3>
+            <p className="mb-6 text-gray-700">{confirmationModal.message}</p>
+            <div className="flex justify-end space-x-3">
+              <button
+                className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold transition"
+                onClick={() => setConfirmationModal({ ...confirmationModal, show: false })}
               >
                 Cancel
               </button>
-              <button 
-                className="btn btn-danger"
+              <button
+                className="px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-white font-semibold transition"
                 onClick={() => handleDeletePet(confirmationModal.petId)}
               >
                 Delete
